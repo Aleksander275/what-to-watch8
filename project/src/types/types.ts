@@ -5,4 +5,20 @@ type MainProps = {
   movieCount: number,
 };
 
-export type { MainProps };
+type Route = {
+  Main: string,
+  Movies: string,
+  MyList: string,
+  Player: string,
+  SingIn: string,
+  Review: string,
+  Error: string,
+}
+
+type Authorization = {
+  Auth: string,
+  NoAuth: string,
+  Unknown: string,
+}
+
+export type { MainProps, Route, Authorization };
