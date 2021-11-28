@@ -1,24 +1,24 @@
 import {Switch, Route, BrowserRouter} from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import Main from '../main/main';
-import { MainProps } from '../../types/types';
+import { Film, Review } from '../../types/types';
 import MoviePage from '../movie-page/movie-page';
 import Error from '../error/error';
 import MyList from '../my-list/my-list';
 import Player from '../player/player';
-import Review from '../review/review';
+import AddReview from '../review/review';
 import SingIn from '../sing-in/sing-in';
 import PrivateRoute from '../private-route/private-route';
 
-function App({ title, genre, year, movieCount }: MainProps): JSX.Element {
+function App({films, reviews}: {films: Film[], reviews: Review[]}): JSX.Element {
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path={AppRoute.Main}>
-          <Main year={year} genre={genre} movieCount={movieCount} title={title}/>
+          <Main films={films}/>
         </Route>
         <Route exact path={AppRoute.Movies}>
-          <MoviePage />
+          <MoviePage films={films} reviews={reviews} />
         </Route>
         <Route exact path={AppRoute.Error}>
           <Error />
@@ -27,14 +27,14 @@ function App({ title, genre, year, movieCount }: MainProps): JSX.Element {
           exact
           path={AppRoute.MyList}
           render={() => <MyList />}
-          authorizationStatus={AuthorizationStatus.NoAuth}
+          authorizationStatus={AuthorizationStatus.Auth}
         >
         </PrivateRoute>
         <Route exact path={AppRoute.Player}>
-          <Player />
+          <Player films={films}/>
         </Route>
         <Route exact path={AppRoute.Review}>
-          <Review />
+          <AddReview />
         </Route>
         <Route exact path={AppRoute.SingIn}>
           < SingIn/>
@@ -45,3 +45,5 @@ function App({ title, genre, year, movieCount }: MainProps): JSX.Element {
 }
 
 export default App;
+
+// {films}: {films: Film[]}, {reviews}: {reviews: Review[]}

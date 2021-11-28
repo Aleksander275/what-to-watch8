@@ -6,7 +6,7 @@ const AppRoute: Route = {
   MyList: '/my-list',
   Player: '/player/:id',
   SingIn: '/sing-in',
-  Review: '/movies/:id/review',
+  Review: '/movies/:id/new-review',
   Error: '/error',
 };
 

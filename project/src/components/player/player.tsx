@@ -1,7 +1,18 @@
-function Player (): JSX.Element {
+/* eslint-disable no-console */
+import { useParams } from 'react-router';
+
+import { Film } from '../../types/types';
+
+function Player ({films}: {films: Film[]}): JSX.Element {
+  const param: { id: string } = useParams();
+  const id = param.id.slice(1);
+  const filmId = films.findIndex((item) => item.id.toString() === id);
+  const houseTime = Math.floor(films[filmId].runTime / 60);
+  const minutesTime = films[filmId].runTime % 60;
+
   return (
     <div className ="player">
-      <video src="#" className ="player__video" poster="img/player-poster.jpg"></video>
+      <video src={films[filmId].videoLink} className ="player__video" poster={films[filmId].posterImage}></video>
 
       <button type="button" className ="player__exit">Exit</button>
 
@@ -11,7 +22,7 @@ function Player (): JSX.Element {
             <progress className ="player__progress" value="30" max="100"></progress>
             <div className ="player__toggler" style = {{ left: '30%' }}>Toggler</div>
           </div>
-          <div className ="player__time-value">1:30:29</div>
+          <div className ="player__time-value">{houseTime}:{minutesTime}:00</div>
         </div>
 
         <div className ="player__controls-row">

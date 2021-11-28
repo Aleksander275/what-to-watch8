@@ -1,9 +1,9 @@
 import React from 'react';
-import Movie from '../movie/movie';
-import { MainProps } from '../../types/types';
+import { Film } from '../../types/types';
 import Logo from '../logo/logo';
+import MoviesList from '../movie-list/movie-list';
 
-function Main ({ title, genre, year, movieCount }: MainProps): JSX.Element {
+function Main ({films}: {films: Film[]}): JSX.Element {
 
   return (
     <React.Fragment>
@@ -38,10 +38,10 @@ function Main ({ title, genre, year, movieCount }: MainProps): JSX.Element {
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{title}</h2>
+              <h2 className="film-card__title">{films[0].name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{genre}</span>
-                <span className="film-card__year">{year}</span>
+                <span className="film-card__genre">{films[0].genre}</span>
+                <span className="film-card__year">{films[0].released}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -100,10 +100,7 @@ function Main ({ title, genre, year, movieCount }: MainProps): JSX.Element {
             </li>
           </ul>
 
-          <div className="catalog__films-list">
-            {/* eslint-disable-next-line react/no-array-index-key */}
-            { new Array(movieCount).fill(Movie).map((movie, id) => movie(id)) }
-          </div>
+          <MoviesList films={films} />
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">Show more</button>
