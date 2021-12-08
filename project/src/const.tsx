@@ -16,4 +16,15 @@ const AuthorizationStatus: Authorization = {
   Unknown: 'UNKNOWN',
 };
 
-export { AppRoute, AuthorizationStatus };
+const SHOWN_COUNT_FILMS = 4;
+
+const DEFAULT_GENRE = 'All genres';
+
+enum ActionTypes {
+  ChangeActiveGenre = 'films/changeActiveGenre',
+  GetFilms = 'films/getFilms',
+  IncreaseCountFilms = 'filmsList/IncreaseCountFilms',
+  ResetCount = 'filmsList/ResetCount',
+}
+
+export { AppRoute, AuthorizationStatus, ActionTypes, SHOWN_COUNT_FILMS, DEFAULT_GENRE };

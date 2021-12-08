@@ -1,3 +1,5 @@
+import { changeActiveGenre, getFilms, increaseCountFilms, resetCount } from '../store/actions';
+
 type MainProps = {
   title: string,
   genre: string,
@@ -52,4 +54,16 @@ type Review = {
   date: string,
 }
 
-export type { MainProps, Route, Authorization, Film, Review };
+type State = {
+  genre: string;
+  films: Film[];
+  count: number;
+}
+
+type ActionsType =
+  | ReturnType<typeof changeActiveGenre>
+  | ReturnType<typeof getFilms>
+  | ReturnType<typeof increaseCountFilms>
+  | ReturnType<typeof resetCount>
+
+export type { MainProps, Route, Authorization, Film, Review, State, ActionsType };

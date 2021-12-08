@@ -12,12 +12,12 @@ function Details ({film}: {film: Film}): JSX.Element {
           <strong className="film-card__details-name">Director</strong>
           <span className="film-card__details-value">{film.director}</span>
         </p>
-        <p className="film-card__details-item">
+        <div className="film-card__details-item">
           <strong className="film-card__details-name">Starring</strong>
-          <span className="film-card__details-value">
-            {film.starring.map((item) => <>{item}, <br /> </>)}
-          </span>
-        </p>
+          <div className="film-card__details-value">
+            {film.starring.map((item) => <div key={item}>{item},</div>)}
+          </div>
+        </div>
       </div>
 
       <div className="film-card__text-col">
