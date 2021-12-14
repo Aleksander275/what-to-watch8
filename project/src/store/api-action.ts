@@ -2,7 +2,7 @@ import { APIRoute, AppRoute } from '../const';
 import { dropToken, saveToken, Token } from '../services/token';
 import { AuthData, FilmFromServer, Review, ThunkActionResult, ReviewData } from '../types/types';
 import { adaptToClient, adaptUserToClient } from '../utils/utils';
-import { loadFilm, loadFilms, loadFilmsFavorite, loadFilmsSimilar, loadReviews, loadUser, redirectToRoute, requireLogout } from './actions';
+import { loadFilm, loadFilmPromo, loadFilms, loadFilmsFavorite, loadFilmsSimilar, loadReviews, loadUser, redirectToRoute, requireLogout } from './actions';
 import {toast} from 'react-toastify';
 
 const AUTH_FAIL_MESSAGE = 'Не забудьте авторизоваться';
@@ -20,6 +20,13 @@ const fetchCurrentFilmAction = (id: string): ThunkActionResult =>
     const {data} = await api.get<FilmFromServer>(`${APIRoute.Films}/${id}`);
     const adaptedFilm = adaptToClient(data);
     dispatch(loadFilm(adaptedFilm));
+  };
+
+const fetchFilmPromoAction = (): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.get<FilmFromServer>(APIRoute.Promo);
+    const adaptedFilm = adaptToClient(data);
+    dispatch(loadFilmPromo(adaptedFilm));
   };
 
 const fetchFilmsSimilarAction = (id: string): ThunkActionResult =>
@@ -85,4 +92,4 @@ const reviewAction = ({rating, comment, id}: ReviewData): ThunkActionResult =>
     }
   };
 
-export { fetchFilmsAction, checkAuthAction, loginAction, logoutAction, fetchReviewsAction, reviewAction, fetchFilmsFavoriteAction, statusFilmFavorite, fetchCurrentFilmAction, fetchFilmsSimilarAction };
+export { fetchFilmsAction, checkAuthAction, loginAction, logoutAction, fetchReviewsAction, reviewAction, fetchFilmsFavoriteAction, statusFilmFavorite, fetchCurrentFilmAction, fetchFilmsSimilarAction, fetchFilmPromoAction };

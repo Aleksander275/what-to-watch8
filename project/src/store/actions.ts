@@ -39,6 +39,11 @@ const loadFilm = (film: Film) => ({
   payload: {film},
 } as const);
 
+const loadFilmPromo = (filmPromo: Film) => ({
+  type: ActionTypes.LoadFilmPromo,
+  payload: {filmPromo},
+} as const);
+
 const loadFilmsFavorite = (filmsFavorite: Film[]) => ({
   type: ActionTypes.LoadfilmsFavorite,
   payload: {filmsFavorite},
@@ -70,4 +75,4 @@ const loadUser = (user: User) => ({
   },
 } as const);
 
-export { resetFilm, loadFilmsSimilar, changeActiveGenre, loadFilm, loadFilmsFavorite, getFilms, increaseCountFilms, resetCount, loadFilms, loadReviews, requireAuthorization, requireLogout, redirectToRoute, loadUser };
+export { loadFilmPromo, resetFilm, loadFilmsSimilar, changeActiveGenre, loadFilm, loadFilmsFavorite, getFilms, increaseCountFilms, resetCount, loadFilms, loadReviews, requireAuthorization, requireLogout, redirectToRoute, loadUser };

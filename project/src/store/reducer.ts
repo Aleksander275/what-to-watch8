@@ -6,6 +6,7 @@ const initialState: State = {
   films: [],
   filmsFavorite: [],
   filmsSimilar: [],
+  filmPromo: null,
   count: SHOWN_COUNT_FILMS,
   reviews: [],
   authorizationStatus: AuthorizationStatus.Unknown,
@@ -64,6 +65,10 @@ function reducer (state: State = initialState, action: ActionsType): State {
     case ActionTypes.LoadFilm: {
       const {film} = action.payload;
       return { ...state, film, isFilmLoaded: true };
+    }
+    case ActionTypes.LoadFilmPromo: {
+      const {filmPromo} = action.payload;
+      return { ...state, filmPromo };
     }
     case ActionTypes.LoadfilmsFavorite: {
       const {filmsFavorite} = action.payload;

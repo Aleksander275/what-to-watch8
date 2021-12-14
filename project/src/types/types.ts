@@ -1,7 +1,7 @@
 import { ThunkAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { AuthorizationStatus } from '../const';
-import { changeActiveGenre, getFilms, increaseCountFilms, loadFilm, loadFilms, loadFilmsFavorite, loadFilmsSimilar, loadReviews, loadUser, redirectToRoute, requireAuthorization, requireLogout, resetCount, resetFilm } from '../store/actions';
+import { changeActiveGenre, getFilms, increaseCountFilms, loadFilm, loadFilmPromo, loadFilms, loadFilmsFavorite, loadFilmsSimilar, loadReviews, loadUser, redirectToRoute, requireAuthorization, requireLogout, resetCount, resetFilm } from '../store/actions';
 
 type MainProps = {
   title: string,
@@ -76,6 +76,7 @@ type Review = {
 type State = {
   genre: string;
   films: Film[];
+  filmPromo: Film | null;
   filmsSimilar: Film[];
   filmsFavorite: Film[];
   film: Film;
@@ -135,6 +136,7 @@ type ActionsType =
   | ReturnType<typeof loadFilm>
   | ReturnType<typeof loadFilmsSimilar>
   | ReturnType<typeof resetFilm>
+  | ReturnType<typeof loadFilmPromo>
 
 type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, ActionsType>;
 

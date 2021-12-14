@@ -4,6 +4,7 @@ import { useHistory } from 'react-router';
 import { AppRoute } from '../../const';
 import { Film, State } from '../../types/types';
 import GenresList from '../genres-list/genres-list';
+import Loading from '../loading/loading';
 import Logo from '../logo/logo';
 import MoviesList from '../movie-list/movie-list';
 import ShowMore from '../show-more/show-more';
@@ -11,6 +12,7 @@ import SingOut from '../sing-out/sing-out';
 
 function Main (): JSX.Element {
   const films = useSelector<State, Film[]>((state) => state.films);
+  const filmPromo = useSelector<State, Film | null>((state) => state.filmPromo);
   const activeGenre = useSelector<State, string>((state: State) => state.genre);
   const count = useSelector<State, number>((state: State) => state.count);
   const history = useHistory();
@@ -20,11 +22,15 @@ function Main (): JSX.Element {
 
   const isShowMore = films.length > count && renderedFilms.length < filterFilms.length;
 
+  if (filmPromo === null) {
+    return <Loading />;
+  }
+
   return (
     <React.Fragment>
       <section className="film-card">
         <div className="film-card__bg">
-          <img src={films[3].backgroundImage} alt={films[3].name} />
+          <img src={filmPromo.backgroundImage} alt={filmPromo.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -41,19 +47,19 @@ function Main (): JSX.Element {
         <div className="film-card__wrap">
           <div className="film-card__info">
             <div className="film-card__poster">
-              <img src={films[3].posterImage} alt={films[3].name} width="218" height="327" />
+              <img src={filmPromo.posterImage} alt={filmPromo.name} width="218" height="327" />
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{films[3].name}</h2>
+              <h2 className="film-card__title">{filmPromo.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{films[3].genre}</span>
-                <span className="film-card__year">{films[3].released}</span>
+                <span className="film-card__genre">{filmPromo.genre}</span>
+                <span className="film-card__year">{filmPromo.released}</span>
               </p>
 
               <div className="film-card__buttons">
 
-                <button className="btn btn--play film-card__button" type="button" onClick={() => history.push(`/player/${films[3].id}`)}>
+                <button className="btn btn--play film-card__button" type="button" onClick={() => history.push(`/player/${filmPromo.id}`)}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>

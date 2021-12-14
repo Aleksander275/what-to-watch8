@@ -46,4 +46,21 @@ const formatTimeElapsed = (period: number): string =>
     .format('-HH:mm:ss')
     .replace('00:', '');
 
-export { adaptToClient, adaptUserToClient, isCheckedAuth, formatTimeElapsed };
+const describingFilm = (count: number): string => {
+  switch (true) {
+    case 0 <= count && count < 3:
+      return 'Bad';
+    case 3 <= count && count <  5:
+      return 'Normal';
+    case 5 <= count && count <  8:
+      return 'Good';
+    case 8 <= count && count <  10:
+      return 'Very good';
+    case 10 <= count:
+      return 'Awesome';
+    default:
+      return '';
+  }
+};
+
+export { adaptToClient, adaptUserToClient, isCheckedAuth, formatTimeElapsed, describingFilm };

@@ -27,6 +27,7 @@ enum ActionTypes {
   LoadFilms = 'data/LoadFilms',
   LoadFilmsSimilar = 'data/LoadFilmsSimilar',
   LoadFilm = 'data/LoadFilm',
+  LoadFilmPromo = 'film/LoadFilmPromo',
   LoadfilmsFavorite = 'data/LoadFilmsFavorite',
   LoadReviews = 'data/LoadReviews',
   LoadUser = 'data/LoadUser',
@@ -36,6 +37,7 @@ enum ActionTypes {
 }
 
 enum APIRoute {
+  Promo = '/promo',
   Films = '/films',
   Favorite = '/favorite',
   Login = '/login',
