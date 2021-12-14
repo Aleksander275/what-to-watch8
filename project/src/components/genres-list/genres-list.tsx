@@ -1,34 +1,21 @@
-import { ActionsType, Film, State } from '../../types/types';
-import {connect, ConnectedProps} from 'react-redux';
-import {Dispatch} from 'redux';
 import { changeActiveGenre, resetCount } from '../../store/actions';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Film, State } from '../../types/types';
 
-const mapStateToProps = ({genre: genreActive}: State) => ({
-  genreActive,
-});
-
-type Films = {
-  films: Film[];
-}
-
-const mapDispatchToProps = (dispatch: Dispatch<ActionsType>) => ({
-  onChangeActiveGenre (genre: string) {
-    dispatch(changeActiveGenre(genre));
-  },
-  onResetCount () {
-    dispatch(resetCount());
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFromRedux & Films;
-
-function GenresList ({films, genreActive, onChangeActiveGenre, onResetCount}: ConnectedComponentProps): JSX.Element {
+function GenresList ({films}: {films: Film[]}): JSX.Element {
+  const genreActive = useSelector<State, string>((state) => state.genre);
+  const dispatch = useDispatch();
   const [isActive, setIsActive] = useState(genreActive);
   const genres = ['All genres', ...new Set(films.map((film) => film.genre))];
+
+  const onChangeActiveGenre = (genre: string) => {
+    dispatch(changeActiveGenre(genre));
+  };
+
+  const onResetCount = () => {
+    dispatch(resetCount());
+  };
 
   const selectedGenre =  (genre: string) => isActive === genre ? 'catalog__genres-item catalog__genres-item--active': 'catalog__genres-item';
 
@@ -54,5 +41,4 @@ function GenresList ({films, genreActive, onChangeActiveGenre, onResetCount}: Co
   );
 }
 
-export {GenresList};
-export default connector(GenresList);
+export default GenresList;

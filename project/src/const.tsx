@@ -1,22 +1,20 @@
-import { Route, Authorization } from './types/types';
+enum AppRoute {
+  Main = '/',
+  Movie = '/movies/:id',
+  MyList = '/my-list',
+  Player = '/player/:id',
+  SingIn = '/sing-in',
+  Review = '/movies/:id/new-review',
+  Error = '/error',
+}
 
-const AppRoute: Route = {
-  Main: '/',
-  Movies: '/movies/:id',
-  MyList: '/my-list',
-  Player: '/player/:id',
-  SingIn: '/sing-in',
-  Review: '/movies/:id/new-review',
-  Error: '/error',
-};
+enum AuthorizationStatus {
+  Auth = 'AUTH',
+  NoAuth = 'NO_AUTH',
+  Unknown = 'UNKNOWN',
+}
 
-const AuthorizationStatus: Authorization = {
-  Auth: 'AUTH',
-  NoAuth: 'NO_AUTH',
-  Unknown: 'UNKNOWN',
-};
-
-const SHOWN_COUNT_FILMS = 4;
+const SHOWN_COUNT_FILMS = 8;
 
 const DEFAULT_GENRE = 'All genres';
 
@@ -25,6 +23,25 @@ enum ActionTypes {
   GetFilms = 'films/getFilms',
   IncreaseCountFilms = 'filmsList/IncreaseCountFilms',
   ResetCount = 'filmsList/ResetCount',
+  ResetFilm = 'film/ResetFilm',
+  LoadFilms = 'data/LoadFilms',
+  LoadFilmsSimilar = 'data/LoadFilmsSimilar',
+  LoadFilm = 'data/LoadFilm',
+  LoadfilmsFavorite = 'data/LoadFilmsFavorite',
+  LoadReviews = 'data/LoadReviews',
+  LoadUser = 'data/LoadUser',
+  RequireAuthorization = 'user/RequireAuthorization',
+  RequireLogout = 'user/RequireLogout',
+  RedirectToRoute = 'login/redirectToRoute',
 }
 
-export { AppRoute, AuthorizationStatus, ActionTypes, SHOWN_COUNT_FILMS, DEFAULT_GENRE };
+enum APIRoute {
+  Films = '/films',
+  Favorite = '/favorite',
+  Login = '/login',
+  Logout = '/logout',
+  Comments = '/comments',
+  Review = '/comments/:film_id'
+}
+
+export { AppRoute, AuthorizationStatus, ActionTypes, SHOWN_COUNT_FILMS, DEFAULT_GENRE, APIRoute };

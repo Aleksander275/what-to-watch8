@@ -37,11 +37,11 @@ function Movie ({film}: {film: Film}): JSX.Element {
         </div>}
       {!showVideo &&
         <div className="small-film-card__image">
-          <img src={film.posterImage} alt={film.name} width="280" height="175" />
+          <img src={film.previewImage} alt={film.name} width="280" height="175" />
         </div>}
 
       <h3 className="small-film-card__title">
-        <Link className="small-film-card__link" to={`/movies/:${film.id}`}>{film.name}</Link>
+        <Link className="small-film-card__link" to={`/movies/${film.id}`}>{film.name}</Link>
       </h3>
 
     </article>

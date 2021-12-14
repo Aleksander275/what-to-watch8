@@ -1,5 +1,9 @@
 /* eslint-disable react/no-array-index-key */
-import { Review } from '../../types/types';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { store } from '../..';
+import { fetchReviewsAction } from '../../store/api-action';
+import { Review, State, ThunkAppDispatch } from '../../types/types';
 import ReviewText from '../review-text/review-text';
 
 function getFirstHalfOfReviews (reviews: Review[]) {
@@ -11,7 +15,13 @@ function getLastHalfOfReviews (reviews: Review[]) {
   return reviews.slice(getFirstHalfOfReviews(reviews).length);
 }
 
-function Reviews ({reviews}: {reviews: Review[]}): JSX.Element {
+function Reviews ({id}: {id: number}): JSX.Element {
+  const reviews = useSelector<State, Review[]>((state) => state.reviews);
+
+  useEffect(() => {
+    (store.dispatch as ThunkAppDispatch)(fetchReviewsAction(id.toString()));
+  }, [id]);
+
   return (
     <div className="film-card__reviews film-card__row">
       <div className="film-card__reviews-col">
