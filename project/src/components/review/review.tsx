@@ -1,11 +1,50 @@
 import Logo from '../logo/logo';
+import { Link, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Film, State } from '../../types/types';
+import SingOut from '../sing-out/sing-out';
+import { useCallback, useRef, useState } from 'react';
+import { reviewAction } from '../../store/api-action';
+import Rating from './rating';
 
-function Review (): JSX.Element {
+const NUMBER_STARS = 10;
+
+function AddReview (): JSX.Element {
+  const param: {id: string} = useParams();
+  const id = param.id;
+  const films = useSelector<State, Film[]>((state) => state.films);
+  const filmId = films.findIndex((item) => item.id.toString() === id);
+  const currentFilm = films[filmId];
+  const textReview = useRef<HTMLTextAreaElement | null>(null);
+  const [selectedStar, setSelectedStar] = useState<HTMLInputElement | null>(null);
+  const dispatch = useDispatch();
+
+  const handleSubmit = useCallback((reviewsId: number) => {
+    if (!selectedStar) {return;}
+
+    const selectedRating = parseInt(selectedStar.value, 10);
+
+    if (textReview.current !== null && selectedRating !== null) {
+      dispatch(reviewAction({
+        rating: selectedRating,
+        comment: textReview.current.value,
+        id: reviewsId,
+      }));
+
+      textReview.current.value = '';
+      selectedStar.checked = false;
+      setSelectedStar(null);
+    }
+  }, [selectedStar, dispatch]);
+
+
+  const handleStarCount = useCallback((evt) => setSelectedStar(evt.target),[]);
+
   return (
-    <section className="film-card film-card--full">
+    <section className="film-card film-card--full" style={{background: currentFilm.backgroundColor}}>
       <div className="film-card__header">
         <div className="film-card__bg">
-          <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel" />
+          <img src={currentFilm.backgroundImage} alt={currentFilm.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -18,69 +57,40 @@ function Review (): JSX.Element {
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <a href="film-page.html" className="breadcrumbs__link">The Grand Budapest Hotel</a>
+                <Link to={`/movies/${currentFilm.id}`} className="breadcrumbs__link">{currentFilm.name}</Link>
               </li>
               <li className="breadcrumbs__item">
-                <a href="/" className="breadcrumbs__link">Add review</a>
+                <Link to={`/movies/${currentFilm.id}/new-review`} className="breadcrumbs__link">Add review</Link>
               </li>
             </ul>
           </nav>
 
-          <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-              </div>
-            </li>
-            <li className="user-block__item">
-              <a href="/" className="user-block__link">Sign out</a>
-            </li>
-          </ul>
+          <SingOut />
         </header>
 
         <div className="film-card__poster film-card__poster--small">
-          <img src="img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width="218" height="327" />
+          <img src={currentFilm.posterImage} alt={currentFilm.name} width="218" height="327" />
         </div>
       </div>
 
       <div className="add-review">
-        <form action="#" className="add-review__form">
+        <form action="#" className="add-review__form" onSubmit={(evt) => {evt.preventDefault(); handleSubmit(currentFilm.id);}}>
           <div className="rating">
             <div className="rating__stars">
-              <input className="rating__input" id="star-10" type="radio" name="rating" value="10" />
-              <label className="rating__label" htmlFor="star-10">Rating 10</label>
-
-              <input className="rating__input" id="star-9" type="radio" name="rating" value="9" />
-              <label className="rating__label" htmlFor="star-9">Rating 9</label>
-
-              <input className="rating__input" id="star-8" type="radio" name="rating" value="8" checked />
-              <label className="rating__label" htmlFor="star-8">Rating 8</label>
-
-              <input className="rating__input" id="star-7" type="radio" name="rating" value="7" />
-              <label className="rating__label" htmlFor="star-7">Rating 7</label>
-
-              <input className="rating__input" id="star-6" type="radio" name="rating" value="6" />
-              <label className="rating__label" htmlFor="star-6">Rating 6</label>
-
-              <input className="rating__input" id="star-5" type="radio" name="rating" value="5" />
-              <label className="rating__label" htmlFor="star-5">Rating 5</label>
-
-              <input className="rating__input" id="star-4" type="radio" name="rating" value="4" />
-              <label className="rating__label" htmlFor="star-4">Rating 4</label>
-
-              <input className="rating__input" id="star-3" type="radio" name="rating" value="3" />
-              <label className="rating__label" htmlFor="star-3">Rating 3</label>
-
-              <input className="rating__input" id="star-2" type="radio" name="rating" value="2" />
-              <label className="rating__label" htmlFor="star-2">Rating 2</label>
-
-              <input className="rating__input" id="star-1" type="radio" name="rating" value="1" />
-              <label className="rating__label" htmlFor="star-1">Rating 1</label>
+              {/*eslint-disable-next-line react/no-array-index-key*/}
+              {new Array(NUMBER_STARS).fill(null).map((_, index) => <Rating index={index} setRating={handleStarCount} key={index}/>)}
             </div>
           </div>
 
           <div className="add-review__text">
-            <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text"></textarea>
+            <textarea
+              ref={textReview}
+              className="add-review__textarea"
+              name="review-text"
+              id="review-text"
+              placeholder="Review text"
+            >
+            </textarea>
             <div className="add-review__submit">
               <button className="add-review__btn" type="submit">Post</button>
             </div>
@@ -93,4 +103,4 @@ function Review (): JSX.Element {
   );
 }
 
-export default Review;
+export default AddReview;

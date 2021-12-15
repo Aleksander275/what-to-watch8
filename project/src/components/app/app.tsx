@@ -1,23 +1,37 @@
-import {Switch, Route, BrowserRouter} from 'react-router-dom';
+import {Switch, Route, Router as BrowserRouter} from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import Main from '../main/main';
-import { MainProps } from '../../types/types';
+import { Film, State } from '../../types/types';
 import MoviePage from '../movie-page/movie-page';
 import Error from '../error/error';
 import MyList from '../my-list/my-list';
 import Player from '../player/player';
-import Review from '../review/review';
+import AddReview from '../review/review';
 import SingIn from '../sing-in/sing-in';
 import PrivateRoute from '../private-route/private-route';
+import { useSelector } from 'react-redux';
+import { isCheckedAuth } from '../../utils/utils';
+import Loading from '../loading/loading';
+import browserHistory from '../../browser-history/browser-history';
 
-function App({ title, genre, year, movieCount }: MainProps): JSX.Element {
+function App(): JSX.Element {
+  const isDataLoaded = useSelector<State, boolean>((state) => state.isDataLoaded);
+  const films = useSelector<State, Film[]>((state) => state.films);
+  const authorizationStatus = useSelector<State, AuthorizationStatus>((state) => state.authorizationStatus);
+
+  if (isCheckedAuth(authorizationStatus) || !isDataLoaded) {
+    return (
+      <Loading />
+    );
+  }
+
   return (
-    <BrowserRouter>
+    <BrowserRouter history={browserHistory}>
       <Switch>
         <Route exact path={AppRoute.Main}>
-          <Main year={year} genre={genre} movieCount={movieCount} title={title}/>
+          <Main />
         </Route>
-        <Route exact path={AppRoute.Movies}>
+        <Route exact path={AppRoute.Movie}>
           <MoviePage />
         </Route>
         <Route exact path={AppRoute.Error}>
@@ -27,15 +41,17 @@ function App({ title, genre, year, movieCount }: MainProps): JSX.Element {
           exact
           path={AppRoute.MyList}
           render={() => <MyList />}
-          authorizationStatus={AuthorizationStatus.NoAuth}
         >
         </PrivateRoute>
         <Route exact path={AppRoute.Player}>
-          <Player />
+          <Player films={films}/>
         </Route>
-        <Route exact path={AppRoute.Review}>
-          <Review />
-        </Route>
+        <PrivateRoute
+          exact
+          path={AppRoute.Review}
+          render={() => <AddReview />}
+        >
+        </PrivateRoute>
         <Route exact path={AppRoute.SingIn}>
           < SingIn/>
         </Route>

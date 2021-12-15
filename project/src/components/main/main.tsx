@@ -1,15 +1,46 @@
 import React from 'react';
-import Movie from '../movie/movie';
-import { MainProps } from '../../types/types';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
+import { AppRoute, AuthorizationStatus } from '../../const';
+import { checkedStatusPromoFilm } from '../../store/api-action';
+import { Film, State } from '../../types/types';
+import GenresList from '../genres-list/genres-list';
+import Loading from '../loading/loading';
 import Logo from '../logo/logo';
+import MoviesList from '../movie-list/movie-list';
+import ShowMore from '../show-more/show-more';
+import SingOut from '../sing-out/sing-out';
 
-function Main ({ title, genre, year, movieCount }: MainProps): JSX.Element {
+function Main (): JSX.Element {
+  const films = useSelector<State, Film[]>((state) => state.films);
+  const filmPromo = useSelector<State, Film | null>((state) => state.filmPromo);
+  const activeGenre = useSelector<State, string>((state: State) => state.genre);
+  const count = useSelector<State, number>((state: State) => state.count);
+  const authorizationStatus = useSelector<State, string>((state) => state.authorizationStatus);
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  const isFavorite = filmPromo?.isFavorite;
+
+  const checkedStatusFilm = (filmFavoriteId: number, status: number) => {
+    if (!filmFavoriteId) {return;}
+    dispatch(checkedStatusPromoFilm(filmFavoriteId, status));
+  };
+
+  const filterFilms = films.filter((film) => (activeGenre === 'All genres') ? film : film.genre === activeGenre);
+  const renderedFilms = filterFilms.slice(0, count);
+
+  const isShowMore = films.length > count && renderedFilms.length < filterFilms.length;
+
+  if (filmPromo === null) {
+    return <Loading />;
+  }
 
   return (
     <React.Fragment>
       <section className="film-card">
         <div className="film-card__bg">
-          <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel" />
+          <img src={filmPromo.backgroundImage} alt={filmPromo.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -19,44 +50,45 @@ function Main ({ title, genre, year, movieCount }: MainProps): JSX.Element {
             < Logo/>
           </div>
 
-          <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-              </div>
-            </li>
-            <li className="user-block__item">
-              <a href = "/" className="user-block__link">Sign out</a>
-            </li>
-          </ul>
+          <SingOut />
+
         </header>
 
         <div className="film-card__wrap">
           <div className="film-card__info">
             <div className="film-card__poster">
-              <img src="img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width="218" height="327" />
+              <img src={filmPromo.posterImage} alt={filmPromo.name} width="218" height="327" />
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{title}</h2>
+              <h2 className="film-card__title">{filmPromo.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{genre}</span>
-                <span className="film-card__year">{year}</span>
+                <span className="film-card__genre">{filmPromo.genre}</span>
+                <span className="film-card__year">{filmPromo.released}</span>
               </p>
 
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button">
+
+                <button className="btn btn--play film-card__button" type="button" onClick={() => history.push(`/player/${filmPromo.id}`)}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
                   <span>Play</span>
                 </button>
-                <button className="btn btn--list film-card__button" type="button">
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
-                  </svg>
+
+                <button className="btn btn--list film-card__button" type="button" style={{justifyContent: 'center'}} onClick={() => history.push(AppRoute.MyList)}>
                   <span>My list</span>
                 </button>
+
+                {authorizationStatus === AuthorizationStatus.Auth ?
+                  <button className ="btn btn--list film-card__button" type="button" onClick={() => checkedStatusFilm(filmPromo.id, Number(!isFavorite))}>
+                    {!isFavorite ?
+                      <svg viewBox="0 0 19 20" width="19" height="20">
+                        <use xlinkHref='#add'></use>
+                      </svg> : ''}
+                    <span>{isFavorite ? 'Remove from my List' : 'Add to my list'}</span>
+                  </button> : ''}
+
               </div>
             </div>
           </div>
@@ -65,49 +97,15 @@ function Main ({ title, genre, year, movieCount }: MainProps): JSX.Element {
 
       <div className="page-content">
         <section className="catalog">
+
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <ul className="catalog__genres-list">
-            <li className="catalog__genres-item catalog__genres-item--active">
-              <a href="/" className="catalog__genres-link">All genres</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Comedies</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Crime</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Documentary</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Dramas</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Horror</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Kids & Family</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Romance</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Sci-Fi</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Thrillers</a>
-            </li>
-          </ul>
+          <GenresList films={films} />
 
-          <div className="catalog__films-list">
-            {/* eslint-disable-next-line react/no-array-index-key */}
-            { new Array(movieCount).fill(Movie).map((movie, id) => movie(id)) }
-          </div>
+          <MoviesList films={renderedFilms} />
 
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">Show more</button>
-          </div>
+          {isShowMore && <ShowMore />}
+
         </section>
 
         <footer className="page-footer">
