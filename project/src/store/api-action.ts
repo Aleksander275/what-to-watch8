@@ -6,7 +6,7 @@ import { loadFilm, loadFilmPromo, loadFilms, loadFilmsFavorite, loadFilmsSimilar
 import {toast} from 'react-toastify';
 
 const AUTH_FAIL_MESSAGE = 'Не забудьте авторизоваться';
-const REVIEW_FAIL_MESSAGE = 'Не указан рейтинг или текст ревью';
+const REVIEW_FAIL_MESSAGE = 'Не указан текст комментария';
 
 const fetchFilmsAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
@@ -95,7 +95,7 @@ const reviewAction = ({rating, comment, id}: ReviewData): ThunkActionResult =>
     try {
       await api.post(`/comments/${id}`, {rating, comment});
     } catch {
-      toast.info(REVIEW_FAIL_MESSAGE);
+      toast.error(REVIEW_FAIL_MESSAGE);
     }
   };
 

@@ -6,8 +6,10 @@ import SingOut from '../sing-out/sing-out';
 import { useCallback, useRef, useState } from 'react';
 import { reviewAction } from '../../store/api-action';
 import Rating from './rating';
+import { toast } from 'react-toastify';
 
 const NUMBER_STARS = 10;
+const RATING_FAIL_MESSAGE = 'Не указ рейтинг фильма';
 
 function AddReview (): JSX.Element {
   const param: {id: string} = useParams();
@@ -20,7 +22,10 @@ function AddReview (): JSX.Element {
   const dispatch = useDispatch();
 
   const handleSubmit = useCallback((reviewsId: number) => {
-    if (!selectedStar) {return;}
+    if (!selectedStar) {
+      toast.error(RATING_FAIL_MESSAGE);
+      return;
+    }
 
     const selectedRating = parseInt(selectedStar.value, 10);
 
