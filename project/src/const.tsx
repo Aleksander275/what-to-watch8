@@ -1,5 +1,5 @@
 enum AppRoute {
-  Main = '/',
+  Main = '/what-to-watch8/',
   Movie = '/movies/:id',
   MyList = '/my-list',
   Player = '/player/:id',

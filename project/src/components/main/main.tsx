@@ -6,6 +6,7 @@ import { checkedStatusPromoFilm } from '../../store/api-action';
 import { Film, State } from '../../types/types';
 import GenresList from '../genres-list/genres-list';
 import Loading from '../loading/loading';
+import LogoFooter from '../logo-footer/logo-footer';
 import Logo from '../logo/logo';
 import MoviesList from '../movie-list/movie-list';
 import ShowMore from '../show-more/show-more';
@@ -109,13 +110,7 @@ function Main (): JSX.Element {
         </section>
 
         <footer className="page-footer">
-          <div className="logo">
-            <a href = "/" className="logo__link logo__link--light">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
+          <LogoFooter />
 
           <div className="copyright">
             <p>© 2019 What to watch Ltd.</p>

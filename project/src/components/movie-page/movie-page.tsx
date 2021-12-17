@@ -11,6 +11,7 @@ import { fetchCurrentFilmAction, fetchFilmsSimilarAction, checkedStatusCurrentFi
 import { store } from '../..';
 import Loading from '../loading/loading';
 import { resetFilm } from '../../store/actions';
+import LogoFooter from '../logo-footer/logo-footer';
 
 function MoviePage (): JSX.Element {
 
@@ -124,13 +125,7 @@ function MoviePage (): JSX.Element {
         </section>
 
         <footer className ="page-footer">
-          <div className ="logo">
-            <a href="main.html" className ="logo__link logo__link--light">
-              <span className ="logo__letter logo__letter--1">W</span>
-              <span className ="logo__letter logo__letter--2">T</span>
-              <span className ="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
+          <LogoFooter />
 
           <div className ="copyright">
             <p>© 2019 What to watch Ltd.</p>

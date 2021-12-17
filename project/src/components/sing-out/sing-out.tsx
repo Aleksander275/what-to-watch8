@@ -25,7 +25,7 @@ function SingOut (): JSX.Element | null {
         </div>
       </li>
       <li className="user-block__item" onClick={handleLogout}>
-        <a href="/" className="user-block__link">Sign out</a>
+        <Link to={AppRoute.Main} className="user-block__link">Sign out</Link>
       </li>
     </ul>
   );

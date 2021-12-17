@@ -4,6 +4,7 @@ import { store } from '../..';
 import { fetchFilmsFavoriteAction } from '../../store/api-action';
 import { Film, State, ThunkAppDispatch } from '../../types/types';
 import Loading from '../loading/loading';
+import LogoFooter from '../logo-footer/logo-footer';
 import Logo from '../logo/logo';
 import Movie from '../movie/movie';
 import SingOut from '../sing-out/sing-out';
@@ -47,13 +48,7 @@ function MyList (): JSX.Element {
       </section>
 
       <footer className="page-footer">
-        <div className="logo">
-          <a href="/" className="logo__link logo__link--light">
-            <span className="logo__letter logo__letter--1">W</span>
-            <span className="logo__letter logo__letter--2">T</span>
-            <span className="logo__letter logo__letter--3">W</span>
-          </a>
-        </div>
+        <LogoFooter />
 
         <div className="copyright">
           <p>© 2019 What to watch Ltd.</p>
